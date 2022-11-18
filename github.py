@@ -1,7 +1,8 @@
-import requests
+import requests,sys
 import json
 import time
-
+from colorama import Fore,init
+init(convert=True)
 
 print('''
    ____ ___ _____ _   _ _   _ ____    ___ _   _ _____ ___  
@@ -15,42 +16,36 @@ username = input("Enter the username: ")
 url = "https://api.github.com/users/" + username
 response = requests.get(url)
 
-data = json.loads(response.text)
+data = response.json()
 
-print("Name: " + data["name"])
-print("Bio: " + data["bio"])
-print("Public Repos: " + str(data["public_repos"]))
-print("Public Gists: " + str(data["public_gists"]))
-print("Followers: " + str(data["followers"]))
-print("Following: " + str(data["following"]))
-print("Created At: " + data["created_at"])
-print("Updated At: " + data["updated_at"])
+print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Name: {Fore.RESET}{Fore.MAGENTA}" + data["name"]+Fore.RESET)
+print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Bio: {Fore.RESET}{Fore.MAGENTA}" + data["bio"]+Fore.RESET)
+print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Public Repos: {Fore.RESET}{Fore.MAGENTA}" + str(data["public_repos"])+Fore.RESET)
+print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Public Gists: {Fore.RESET}{Fore.MAGENTA}" + str(data["public_gists"])+Fore.RESET)
+print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Followers: {Fore.RESET}{Fore.MAGENTA}" + str(data["followers"])+Fore.RESET)
+print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Following: {Fore.RESET}{Fore.MAGENTA}" + str(data["following"])+Fore.RESET)
+print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Created At: {Fore.RESET}{Fore.MAGENTA}" + data["created_at"]+Fore.RESET)
+print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Updated At: {Fore.RESET}{Fore.MAGENTA}" + data["updated_at"]+Fore.RESET)
 
-repos = data["repos_url"]
-repos_response = requests.get(repos)
-repos_data = json.loads(repos_response.text)
 
-print("Repos: ")
-for repo in repos_data:
-    print(repo["name"])
+repos_data = requests.get(data["repos_url"]).json()
 
-with open("github.txt", "w") as file:
-    file.write("Name: " + data["name"] )
-    file.write("Bio: " + data["bio"] )
-    file.write("Public Repos: " + str(data["public_repos"]) )
-    file.write("Public Gists: " + str(data["public_gists"]) )
-    file.write("Followers: " + str(data["followers"]) )
-    file.write("Following: " + str(data["following"]) )
-    file.write("Created At: " + data["created_at"] )
-    file.write("Updated At: " + data["updated_at"] )
-    file.write("Repos: " )
-    for repo in repos_data:
-        file.write(repo["name"])
-
-with open("repos.txt", "w") as file:
-    for repo in repos_data:
-        file.write(repo["name"])
+output = {}
+output["Name"] = data["name"] ; output["Bio"] = data["bio"] ; output["Public Repos"] = data['public_repos'] ; output['Public Gists'] = data['public_gists']
+output["Followers"] = data['followers'] ; output['Following'] = data['following'] ; output["Created At"] = data["created_at"] ; output['Updated At'] = data['updated_at']
+d = []
+for i in repos_data:
+    d.append(i['name'])
+output['repos'] = d
+with open('output.json','a') as f:
+    d = str(open('output.json').read().splitlines())
+    if username in d:
+        print(f"{Fore.RED} INFO : {Fore.LIGHTMAGENTA_EX} Username Already In File {Fore.RESET}")
+        sys.exit(0)
         
+    v = {} ; v[username] = output
+    json.dump(v,f) ; f.close()
+
 time.sleep(2)
-print("Saved the data in a file")
+print(f"{Fore.RED} INFO : {Fore.GREEN}Saved the data in a file{Fore.RESET}")
 time.sleep(3)
