@@ -10,13 +10,18 @@ print('''
  | |  _ | |  | | | |_| | | | |  _ \   | ||  \| | |_ | | | |
  | |_| || |  | | |  _  | |_| | |_) |  | || |\  |  _|| |_| |
   \____|___| |_| |_| |_|\___/|____/  |___|_| \_|_|   \___/ 
-                                                           - termed#7613
                                                              ''')
 username = input("Enter the username: ")
 url = "https://api.github.com/users/" + username
 response = requests.get(url)
 
 data = response.json()
+
+# if the user isn't on github or wrong username 
+if response.status_code == 404:
+    print("The User Wasn't Found on Github")
+    time.sleep(2)
+    sys.exit()
 
 print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Name: {Fore.RESET}{Fore.MAGENTA}" + data["name"]+Fore.RESET)
 print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Bio: {Fore.RESET}{Fore.MAGENTA}" + data["bio"]+Fore.RESET)
@@ -26,6 +31,9 @@ print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Followers: {Fore.RESET}{Fore.MA
 print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Following: {Fore.RESET}{Fore.MAGENTA}" + str(data["following"])+Fore.RESET)
 print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Created At: {Fore.RESET}{Fore.MAGENTA}" + data["created_at"]+Fore.RESET)
 print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Updated At: {Fore.RESET}{Fore.MAGENTA}" + data["updated_at"]+Fore.RESET)
+print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Location: {Fore.RESET}{Fore.MAGENTA}" + data["location"]+Fore.RESET)
+print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Company: {Fore.RESET}{Fore.MAGENTA}" + data["company"]+Fore.RESET)
+print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Email: {Fore.RESET}{Fore.MAGENTA}" + data["email"]+Fore.RESET)
 
 
 repos_data = requests.get(data["repos_url"]).json()
