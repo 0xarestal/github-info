@@ -31,9 +31,6 @@ print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Followers: {Fore.RESET}{Fore.MA
 print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Following: {Fore.RESET}{Fore.MAGENTA}" + str(data["following"])+Fore.RESET)
 print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Created At: {Fore.RESET}{Fore.MAGENTA}" + data["created_at"]+Fore.RESET)
 print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Updated At: {Fore.RESET}{Fore.MAGENTA}" + data["updated_at"]+Fore.RESET)
-print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Location: {Fore.RESET}{Fore.MAGENTA}" + data["location"]+Fore.RESET)
-print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Company: {Fore.RESET}{Fore.MAGENTA}" + data["company"]+Fore.RESET)
-print(f"{Fore.RED} INFO : {Fore.RESET}{Fore.CYAN}Email: {Fore.RESET}{Fore.MAGENTA}" + data["email"]+Fore.RESET)
 
 
 repos_data = requests.get(data["repos_url"]).json()
